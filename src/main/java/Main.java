@@ -134,3 +134,48 @@ public class Main {
         System.out.println("האם כל האיברים שונים? " + unique);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+תרגיל בודק כפילויות:
+
+package targil;
+
+public class Main {
+    public static void main(String[] args) {
+        Node<Integer> p = new Node<>(1);
+        p.next = new Node<>(2);
+        p.next.next = new Node<>(3);
+        p.next.next.next = new Node<>(2);
+
+        boolean result = RepetNum(p);
+        System.out.println("האם יש איברים שחוזרים על עצמם? " + result);
+    }
+
+    public static boolean RepetNum(Node<Integer> p) {
+        for (Node<Integer> i = p; i != null; i = i.next) {
+            for (Node<Integer> j = p; j != i; j = j.next) {
+                if (i.value.equals(j.value)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
