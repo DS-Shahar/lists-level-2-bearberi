@@ -1,181 +1,184 @@
-package com.shaharyi.node;
+import java.util.Scanner;
 
 public class Main {
-
-    public static IntNode mergeLists(IntNode list1, IntNode list2) {
-        IntNode mergedList = null;
-        IntNode tail = null;
-
-        while (list1 != null && list2 != null) {
-            IntNode newNode;
-            if (list1.getValue() <= list2.getValue()) {
-                newNode = new IntNode(list1.getValue());
-                list1 = list1.getNext();
-            } else {
-                newNode = new IntNode(list2.getValue());
-                list2 = list2.getNext();
-            }
-            if (mergedList == null) {
-                mergedList = newNode;
-                tail = mergedList;
-            } else {
-                tail.setNext(newNode);
-                tail = newNode;
-            }
-        }
-
-        while (list1 != null) {
-            IntNode newNode = new IntNode(list1.getValue());
-            tail.setNext(newNode);
-            tail = newNode;
-            list1 = list1.getNext();
-        }
-
-        while (list2 != null) {
-            IntNode newNode = new IntNode(list2.getValue());
-            tail.setNext(newNode);
-            tail = newNode;
-            list2 = list2.getNext();
-        }
-
-        return mergedList;
-    }
-
-    public static IntNode selectionSort(IntNode list) {
-        if (list == null) return null;
-
-        IntNode sortedList = null;
-        while (list != null) {
-            IntNode minNode = list;
-            IntNode current = list.getNext();
-
-            while (current != null) {
-                if (current.getValue() < minNode.getValue()) {
-                    minNode = current;
-                }
-                current = current.getNext();
-            }
-
-            IntNode prev = null;
-            current = list;
-            while (current != minNode) {
-                prev = current;
-                current = current.getNext();
-            }
-
-            if (prev != null) prev.setNext(current.getNext();
-            else list = current.getNext();
-
-            current.setNext(null);
-            if (sortedList == null) {
-                sortedList = current;
-            } else {
-                IntNode temp = sortedList;
-                while (temp.getNext() != null) {
-                    temp = temp.getNext();
-                }
-                temp.setNext(current);
-            }
-        }
-
-        return sortedList;
-    }
-
-    public static int calculateDistance(IntNode list, int value) {
-        int firstIndex = -1, lastIndex = -1;
-        int index = 0;
-
-        while (list != null) {
-            if (list.getValue() == value) {
-                if (firstIndex == -1) firstIndex = index;
-                lastIndex = index;
-            }
-            list = list.getNext();
-            index++;
-        }
-
-        if (firstIndex == -1) return -1;
-
-        return firstIndex + (lastIndex - firstIndex);
-    }
-
-    public static boolean areAllElementsUnique(IntNode list) {
-        IntNode outer = list;
-        while (outer != null) {
-            IntNode inner = outer.getNext();
-            while (inner != null) {
-                if (outer.getValue() == inner.getValue()) {
-                    return false;
-                }
-                inner = inner.getNext();
-            }
-            outer = outer.getNext();
-        }
-        return true;
-    }
+    public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
-        IntNode list1 = new IntNode(1, new IntNode(3, new IntNode(5)));
-        IntNode list2 = new IntNode(2, new IntNode(4, new IntNode(6)));
+        int[] arr1 = {5, 8, 1, 12, 6,8, 9};
+        int[] arr2 = {10, 22, 33, 40, 50, 60, 70};
+        int [] arr3 = {1,4,20,50,55};
 
-        IntNode mergedList = mergeLists(list1, list2);
-        System.out.println("רשימה ממוינת אחרי מיזוג: " + mergedList);
+       Node<Integer> L1 = buildList(arr1);
+       Node<Integer> L2 = buildList(arr2);
+       Node<Integer> L3 = buildList(arr3);
 
-        IntNode unsortedList = new IntNode(5, new IntNode(2, new IntNode(9, new IntNode(1))));
-        IntNode sortedList = selectionSort(unsortedList);
-        System.out.println("רשימה אחרי מיון: " + sortedList);
 
-        IntNode list3 = new IntNode(5, new IntNode(8, new IntNode(3, new IntNode(8, new IntNode(2, new IntNode(9))))));
-        int distanceSum = calculateDistance(list3, 8);
-        System.out.println("סכום המרחקים עבור 8: " + distanceSum);
+      System.out.println("ex1:" + ex1(L2, L3));
+      System.out.println("ex2:" + ex2(L1));
+      System.out.println("ex3:" + ex3(L1, 8));
+      System.out.println("ex4:" + ex4(L1));
+      System.out.println("ex5:" + ex5(L1));
+      System.out.println("ex6:" + ex6(L1));
+System.out.println ("ex7:");
+	ex7(L1);
+	 }
 
-        IntNode list4 = new IntNode(1, new IntNode(2, new IntNode(3)));
-        boolean unique = areAllElementsUnique(list4);
-        System.out.println("האם כל האיברים שונים? " + unique);
+
+    public static Node<Integer> buildList(int[] arr) {
+        Node<Integer> deme = new Node<>(arr[0]);
+        Node<Integer> current = deme;
+        for (int i = 1; i < arr.length; i++) {
+            current.setNext(new Node<>(arr[i]));
+            current = current.getNext();
+        }
+        return deme;
     }
+    
+    public static Node<Integer> ex1(Node<Integer> l1, Node<Integer> l2) {
+    		    Node<Integer> dummy = new Node<>(-1);
+    		    Node<Integer> current = dummy;
+
+    		    while (l1 != null && l2 != null) {
+    		        if (l1.getValue() <= l2.getValue()) {
+    		            current.setNext(l1);
+    		            l1 = l1.getNext();
+    		        } else {
+    		            current.setNext(l2);
+    		            l2 = l2.getNext();
+    		        }
+    		        current = current.getNext();
+    		    }
+
+    		    if (l1 != null) {
+    		        current.setNext(l1);
+    		    } else if (l2 != null) {
+    		        current.setNext(l2);
+    		    }
+    		    return dummy.getNext();
+    	 }
+    	 
+    	 
+    	 
+    	 public static Node<Integer> ex2(Node<Integer> deme) {
+    		    if (deme == null || deme.getNext() == null) {
+    		        return deme;
+    		    }
+
+    		    Node<Integer> current = deme;
+    		    Node<Integer> next = null;
+    		    int temp;
+
+    		    while (current != null) {
+    		        next = current.getNext();
+    		        while (next != null) {
+    		            if (current.getValue() > next.getValue()) {
+    		                temp = current.getValue();
+    		                current.setValue(next.getValue());
+    		                next.setValue(temp);
+    		            }
+    		            next = next.getNext();
+    		        }
+    		        current = current.getNext();
+    		    }
+
+    		    return deme;
+    		}
+    	 public static int ex3(Node<Integer> L1, int num) {
+    		    int counter = 0, temp = 0;
+    		    while (L1 != null) {
+    		        if (L1.getValue() != num) {
+    		            counter++;
+    		        } else {
+    		            temp += counter;
+    		            counter = 0;
+    		        }
+    		        L1 = L1.getNext();
+    		    }
+    		    if (temp == 0) {
+    		        return -1;
+    		    }
+    		    return temp;
+    		}
+    	 public static boolean ex4(Node<Integer> L1) {
+    		 boolean flag= true;
+    		 Node<Integer> current = L1;
+ 		     Node<Integer> next = null;
+    		 while (current!= null) {
+    			 next = current.getNext();
+    			 while (next!= null) {
+    			  if (current.getValue().equals(next.getValue())) {
+    				 return false;
+    			 }
+    			 next= next.getNext();
+    		 }
+    			 current=current.getNext();
+    		 }
+    		 return true;
+    	 }
+    	 
+    	 public static Node<Integer> ex5(Node<Integer> L1) {
+    		    if (L1 == null || L1.getNext() == null) {
+    		        return L1;
+    		    }
+    		    Node<Integer> current = L1;
+    		    while (current != null) {
+    		        Node<Integer> runner = current;
+    		        while (runner.getNext() != null) {
+    		            if (current.getValue().equals(runner.getNext().getValue())) {
+    		                runner.setNext(runner.getNext().getNext());
+    		            } else {
+    		                runner = runner.getNext();
+    		            }
+    		        }
+    		        current = current.getNext();
+    		    }
+    		    return L1;
+    		}
+    
+	public static int ex6(Node<Integer> head) {
+		int counter=1,maximum=1;
+		while (head.getNext() != null && head != null) {
+			if(head.getValue()<=head.getNext().getValue()) {
+				counter++;
+			}
+		else {
+			if (counter>maximum) {
+				maximum= count;
+			}
+			counter=1;
+		}
+		head = head.getNext();
+		}
+		return Math.max(maximum, counter);
+	
+	}
+public static void ex7(Node<Integer> head) {
+		int counter=1,max=1;
+		Node<Integer>maxI= head;
+		Node<Integer>maxI2= head;
+		while (head.getNext() != null ) {
+			if(head.getValue()<=head.getNext().getValue()) {
+				counter++;
+			}
+		else {
+			if (counter>max) {
+				max= counter;
+				maxI2= maxI;
+			}
+			counter=1;
+			maxI=head.getNext();
+		}
+		head = head.getNext();
+		
+		}
+		if (counter>max) {
+				max= counter;
+				maxI2=maxI;
+		}
+		
+	for (int i=1; i<=max; i++){
+	 System.out.print( maxI2.getValue() + " , "  );
+	 maxI2=maxI2.getNext();
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-תרגיל בודק כפילויות:
-
-package targil;
-
-public class Main {
-    public static void main(String[] args) {
-        Node<Integer> p = new Node<>(1);
-        p.next = new Node<>(2);
-        p.next.next = new Node<>(3);
-        p.next.next.next = new Node<>(2);
-
-        boolean result = RepetNum(p);
-        System.out.println("האם יש איברים שחוזרים על עצמם? " + result);
-    }
-
-    public static boolean RepetNum(Node<Integer> p) {
-        for (Node<Integer> i = p; i != null; i = i.next) {
-            for (Node<Integer> j = p; j != i; j = j.next) {
-                if (i.value.equals(j.value)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }
